@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>teste ajax</title>
+</head>
+<body>
+<div id="resposta">
+	
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script>
+  
+var resposta = document.getElementById("resposta");
+	var xmlHttp;
+  
+  if (window.XMLHttpRequest) {
+  		
+  		xmlHttp = new XMLHttpRequest;
+ 		console.log(xmlHttp); 
+  }	
+ else {
+		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+		 	resposta.innerHTML = xmlHttp.responseText;
+		}
+
+	}
+
+	xmlHttp.open('GET', 'teste.txt', true);
+	xmlHttp.send();
+
+  </script>
+	
+</body>
+</html>

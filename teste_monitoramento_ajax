@@ -1,0 +1,51 @@
+<?php
+	 include 'config.php';
+      include 'connection.php';
+      /*session_start();
+      
+      if(!isset($_SESSION['login']) and !isset($_SESSION['senha'])){
+        echo ("<script>alert('Não está logado'); </script>");
+        echo ("<script>location.href='login.php';</script>");
+      }*/
+      
+      $vaga_restauracao = DBRead('info_hospitais' ,"WHERE hospital = 'Restauração'");
+      $vaga_getulio = DBRead('info_hospitais' ,"WHERE hospital = 'Getulio Vargas'");
+      $vaga_oswaldo = DBRead('info_hospitais' ,"WHERE hospital = 'Oswaldo Cruz'");
+      $vaga_miguel = DBRead('info_hospitais' ,"WHERE hospital = 'Miguel Arraes'");
+      
+      
+    
+  
+  
+  //Ler registros
+  function DBRead($table, $params = null, $fields = '*'){
+    $params = ($params)? " {$params}":null;
+
+    $query = "SELECT {$fields} FROM {$table}{$params}";
+    $result = DBExecute($query);
+    
+    if(!mysqli_num_rows($result))
+       return false;
+    else{
+      while($res = mysqli_fetch_assoc($result)){
+        $data[] = $res;
+        }
+      return $data;
+    }
+  }
+  
+    // Executa Querys
+  
+  function DBExecute($query){
+    $link = DBConect();
+    
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    
+    DBClose($link);
+    return $result;
+  }
+
+
+
+
+?>

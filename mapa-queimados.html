@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+<body>			
+		<div id="map">
+    <script>
+ var hospitais = {
+      restauração :{
+         centro: {lat: -8.053553,lng: -37.969646},
+         vaga: 2
+           ,
+         cor: '#F4415B'
+
+      },
+
+      getulio :{
+         centro: {lat: -8.051655,lng: -34.922328},
+         vaga: 5
+           ,
+         cor: '#4195F4'
+
+      },
+  
+      oswaldo :{
+         centro: {lat: -8.047708,lng: -34.887608},
+         vaga: 10
+           ,
+         cor: '#42F4B9'
+
+      },
+
+      miguel :{
+         centro: {lat: -7.920262,lng: -34.891060},
+         vaga: 30 
+           ,
+         cor: '#42F4B9'
+      },
+ }
+
+
+      function initMap() {
+        // Styles a map in night mode.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -8.584382, lng: -37.969646},
+          zoom: 7.67,
+		  mapTypeControl: false,
+		  streetViewControl: false,
+		  fullscreenControl: false,
+          styles: [{
+        'featureType': 'all',
+        'elementType': 'all',
+        'stylers': [{'visibility': 'off'}]
+      }, {
+        'featureType': 'landscape',
+        'elementType': 'geometry',
+        'stylers': [{'visibility': 'on'}, {'color': '#fcfcfc'}]
+      }, {
+        'featureType': 'water',
+        'elementType': 'labels',
+        'stylers': [{'visibility': 'off'}]
+      }, {
+        'featureType': 'water',
+        'elementType': 'geometry',
+        'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
+      }]
+        });
+      
+	  
+	 map.data.loadGeoJson('map2.geojson');
+	 map.data.setStyle(function(feature) {
+          var color = 'gray';
+          if (feature.getProperty('isColorful')) {
+            color = feature.getProperty('color');
+          }
+          return /** @type {!google.maps.Data.StyleOptions} */({
+            fillColor: color,
+            strokeColor: color,
+            strokeWeight: 2
+          });
+        }); 
+	   
+
+     for (var hosp in hospitais){
+
+
+
+        var cityCircle = new google.maps.Circle({
+            strokeColor: hospitais[hosp].cor,
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: hospitais[hosp].cor,
+            fillOpacity: 1,
+            map: map,
+            center: hospitais[hosp].centro,
+            radius:  9000 
+          });
+
+
+     } 
+	 
+	 
+
+
+
+   }
+	 
+ 
+
+      
+	  
+	 
+    </script>
+		</div>
+		    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKKh5M6n8iEdp9tiG6II94BpXdO-JtklQ&callback=initMap">
+    </script>
+			</body>
+</html>
