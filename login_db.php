@@ -7,7 +7,7 @@
   $login = isset($_POST['usuario']) ? $_POST['usuario'] : null;
   $entrar = isset($_POST['entrar'])? $_POST['entrar'] : null;
   $manter = isset($_POST['mantenha-me']) ? $_POST['mantenha-me'] : null;
-  $senha = md5(isset($_POST['senha'])? $_POST['senha'] : null);
+  $senha = isset($_POST['senha']) ? md5($_POST['senha']) : null;
  
  if (isset($entrar)) {
   $verifica = DBRead('info_clientes', "WHERE usuario = '{$login}' AND senha = '{$senha}'");       

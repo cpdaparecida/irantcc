@@ -9,45 +9,12 @@
       $usuario = DBRead('info_clientes', "WHERE usuario = '{$_SESSION['login']}'");
       }
        else if(!isset($_COOKIE['login'])){
-        echo ("<script>alert('Não está logado'); </script>");
         echo ("<script>location.href='login.html';</script>");
       }
       else{
-        $usuario = DBRead('info_clientes', "WHERE usuario = '{$_COOKIE['login']}'");
+        //$usuario = DBRead('info_clientes', "WHERE usuario = '{$_COOKIE['login']}'");
       }
-      $vaga_restauracao = DBRead('info_hospitais' ,"WHERE hospital = 'Restauração'");
-      $vaga_getulio = DBRead('info_hospitais' ,"WHERE hospital = 'Getulio Vargas'");
-      $vaga_oswaldo = DBRead('info_hospitais' ,"WHERE hospital = 'Oswaldo Cruz'");
-      $vaga_miguel = DBRead('info_hospitais' ,"WHERE hospital = 'Miguel Arraes'");
-    
-  
-  //Ler registros
-  function DBRead($table, $params = null, $fields = '*'){
-    $params = ($params)? " {$params}":null;
 
-    $query = "SELECT {$fields} FROM {$table}{$params}";
-    $result = DBExecute($query);
-    
-    if(!mysqli_num_rows($result))
-       return false;
-    else{
-      while($res = mysqli_fetch_assoc($result)){
-        $data[] = $res;
-        }
-      return $data;
-    }
-  }
-  
-    // Executa Querys
-  
-  function DBExecute($query){
-    $link = DBConect();
-    
-    $result = mysqli_query($link, $query) or die(mysqli_error($link));
-    
-    DBClose($link);
-    return $result;
-  }
   ?>
 
 <!DOCTYPE html>
@@ -60,6 +27,7 @@
     <meta name="description" content="Supervisório de leitos hospitalares, criado para agilizar a transferencia de pacientes que seguem aguardando atendemento especializado">
     <meta name="keywords" content="supervisório, leitos, supervisório hospitalar, tecnologia hospitalar, superviório na saúde, materialize,beds">
     <title>IranTCC</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Favicons-->
     <link rel="icon" href="images/avatar/avatar-7.png" sizes="32x32">
     <!-- Favicons-->
@@ -76,17 +44,18 @@
     <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
     <link href="vendors/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet">
     <link href="vendors/flag-icon/css/flag-icon.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   </head>
 
 
   
-  <body>
-    <!-- Start Page Loading -->
+  <body> 
+    <!-- Start Page Loading-->
     <div id="loader-wrapper">
       <div id="loader"></div>
       <div class="loader-section section-left"></div>
       <div class="loader-section section-right"></div>
-    </div>
+    </div> 
     <!-- End Page Loading -->
     <!-- //////////////////////////////////////////////////////////////////////////// -->
     <!-- START HEADER -->
@@ -162,7 +131,7 @@
               
             </ul>
             <!-- notifications-dropdown -->
-            <ul id="notifications-dropdown" class="dropdown-content">
+            <ul  id="notifications-dropdown" class="dropdown-content">
               <li>
                 <h6>NOTIFICATIONS
                   <span class="new badge">1</span>
@@ -236,7 +205,7 @@
                         <i class="material-icons">keyboard_tab</i> Sair</a>
                     </li>
                   </ul>
-                  <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown-nav"><?php echo isset($_SESSION['nome']) ? $_SESSION['nome']  : $_COOKIE['funcao']?><i class="mdi-navigation-arrow-drop-down right"></i></a>
+                  <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown-nav"><?php echo isset($_SESSION['nome']) ? $_SESSION['nome']  : $_COOKIE['nome']?><i class="mdi-navigation-arrow-drop-down right"></i></a>
                   <p class="user-roal"><?php echo isset($_SESSION['funcao']) ? $_SESSION['funcao']  : $_COOKIE['funcao']?></p>
                   </a>
                </div>
@@ -247,32 +216,33 @@
                 <li class="bold">
                   <a href="index.php" class="waves-effect waves-cyan">
                       <i class="material-icons">pie_chart_outlined</i>
-                      <span class="nav-text">Supervisório</span>
+                      <span class="nav-text">Painel de Vagas</span>
                     </a>
                 </li>
                 <li class="bold">
-                  <a href="visaogeral.php" class="waves-effect waves-cyan">
+                  <a href="/visao/" class="waves-effect waves-cyan">
                       <i class="material-icons">cast</i>
-                      <span class="nav-text">Visão Geral</span>
+                      <span class="nav-text">Mapa</span>
                     </a>
                 </li>
                 <li class="bold">
-                  <a href="monitoramento.php" class="waves-effect waves-cyan">
+                  <a href="/monitoramento/" class="waves-effect waves-cyan">
                       <i class="material-icons">show_chart</i>
                       <span class="nav-text">Monitoramento</span>
                     </a>
                 </li>
                 <li class="bold">
-                  <a href="estatistica.php" class="waves-effect waves-cyan">
+                  <a href="/estatistica/" class="waves-effect waves-cyan">
                       <i class="material-icons">insert_chart</i>
-                      <span class="nav-text">Estatisticas</span>
+                      <span class="nav-text">Relatórios</span>
                     </a>
                 </li>
                 <div class="divider"> </div>
-                <li class="bold">
-                 <?php
+                <li class="bold" id="nav_hospitais">
+                <?php
+
                   if(strcmp(isset($_COOKIE['funcao']) ? $_COOKIE['funcao']: $_SESSION['funcao'], "Diretoria") == 0){
-                    echo "<a href=\"hospital-".(isset($_COOKIE['hospital']) ? "{$hospitais[$_COOKIE['hospital']]}.php\"" : "{$hospitais[$_SESSION['hospital']]}.php\"")." class=\"waves-effect waves-cyan\">
+                    echo "<a href=\"/hospital/".(isset($_COOKIE['hospital']) ? "{$hospitais[$_COOKIE['hospital']]}.php\"" : "{$hospitais[$_SESSION['hospital']]}.php\"")." class=\"waves-effect waves-cyan\">
                       <i class=\"material-icons\">local_hospital</i> 
                       <span class=\"nav-text\">".(isset($_COOKIE['Hospital']) ? "{$_COOKIE['hospital']}</span>\n</a>" : "{$_SESSION['hospital']}</span>\n</a>");   
                   }
@@ -286,7 +256,7 @@
                     <div class=\"collapsible-body\">
                       <ul class=\"collection\">";
                       foreach ($_COOKIE['hospitais'] as $key => $value) {
-                        echo "\n<a href=\"hospital-".$hospitais[htmlspecialchars($value)].".php\" class=\"collection-item center\">".htmlspecialchars($value)."</a>";
+                        echo "\n<a href=\"/hospital/".$hospitais[htmlspecialchars($value)].".php\" class=\"collection-item center\">".htmlspecialchars($value)."</a>";
                       }
                      echo "</ul>
                     </div>  
@@ -303,7 +273,7 @@
                     <div class=\"collapsible-body\">
                       <ul class=\"collection\">";
                       foreach ($_SESSION['hospitais'] as $key => $value) {
-                        echo "\n<a href=\"hospital-".$hospitais[htmlspecialchars($value)].".php\" class=\"collection-item center\">".htmlspecialchars($value)."</a>";
+                        echo "\n<a href=\"/hospital/".$hospitais[htmlspecialchars($value)].".php\" class=\"collection-item center\">".htmlspecialchars($value)."</a>";
                       }
                      echo "</ul>
                     </div>  
@@ -319,10 +289,10 @@
                       </div>
                     <div class=\"collapsible-body\">
                       <ul class=\"collection\">
-                      <a href=\"hospital-restauracao.php\" class=\"collection-item center\">Restauração</a>
-                      <a href=\"hospital-getulio-vargas.php\" class=\"collection-item center\">Getulio Vargas</a>
-                      <a href=\"hospital-oswaldo-cruz.php\" class=\"collection-item center\">Oswaldo Cruz</a>
-                      <a href=\"hospital-miguel-arraes.php\" class=\"collection-item center\">Miguel Arraes</a>
+                      <a href=\"/hospital/restauracao.php\" class=\"collection-item center\">Restauração</a>
+                      <a href=\"/hospital/getulio-vargas.php\" class=\"collection-item center\">Getulio Vargas</a>
+                      <a href=\"/hospital/oswaldo-cruz.php\" class=\"collection-item center\">Otavio de Freitas</a>
+                      <a href=\"/hospital/miguel-arraes.php\" class=\"collection-item center\">Miguel Arraes</a>
                      </ul>
                     </div>  
                     </li> 
@@ -333,19 +303,19 @@
                  
                 </li>
                 <li class="bold">
-                  <a href="css-color.html" class="waves-effect waves-cyan">
+                  <a href="/especialidades/" class="waves-effect waves-cyan">
                       <i class="material-icons">healing</i>
                       <span class="nav-text">Especialidades</span>
                     </a>
                 </li>
                 <li class="bold">
-                  <a href="table-basic.html" class="waves-effect waves-cyan">
+                  <a href="/historico/" class="waves-effect waves-cyan">
                       <i class="material-icons">archive</i>
                       <span class="nav-text">Históricos</span>
                     </a>
                 </li>
                 <li class="bold">
-                  <a href="ui-icons.html" class="waves-effect waves-cyan">
+                  <a href="/contato/" class="waves-effect waves-cyan">
                     <i class="material-icons">contacts</i>
                     <span class="nav-text">Contato</span>
                   </a>
@@ -363,430 +333,76 @@
         <section id="content">
           <!--start container-->
           <div class="container">
-            <!--card stats start-->
+            <!--Controle de modo de visualização-->
+            <div class="row mt-1">
+              <h5 class="breadcumbs-title"> Painel de Vagas</h5>
+             <div class="divider mt-1"></div>
+             <div class="row mt-1">
+             <div class="col s5 pt-1">
+               <span class="">Filtros: </span>
+               
+             </div>
+             <div class="col s1">
+               <label class="">Mostrar:
+               <a href="" class="btn-flat pl-0 pr-0 tooltipped" data-position="bottom" data-tooltip="Modulos"><i class="material-icons mb-0 md-24">view_comfy</i></a>
+               <a href="" class="btn-flat pl-0 pr-0 tooltipped" data-position="bottom" data-tooltip="Lista"  ><i class="material-icons mb-0 md-24 grey-text" >view_list</i></a>
+               </label>
+               </div>
+               <div class="input-field col s3">
+               <select id="selecaoFiltro" onchange="selecionaFiltro(this)">
+                 <option value="" disabled="true" selected="true">Filtros</option>
+                 <option value="Vascular" >Vascular</option>
+                 <option value="Traumato" >Traumato</option>
+                 <option value="Queimaduras" >Queimaduras</option>
+                 <option value="Obstetricia" >Obstetrícia</option>
+                 <option value="Clinica" >Clinica</option>
+                 <option value="Cardiacos" >Cardiacos</option>
+                 <option value="Infectologia" >Infectologia</option>
+                 <option value="Intoxicacao" >Intoxicação</option>
+                 <option value="Urologia" >Urologia</option>
+                 <option value="Odontologia" >Odontologia</option>
+                 <option value="Otorrinolaringologia" >Otorrinolaringologia</option>
+                 <option value="Pediatria" >Pediatria</option>
+                 <option value="Neurologia" >Neurologia</option>
+                 <option value="Ginecologia" >Ginecologia</option>
+                 <option value="Psiquiatria" >Psiquiatria</option>
+               </select>
+               <label for="selecaoFiltro">Adicionar Filtros</label>
+              </div>
+
+             <div class="input-field col s3">
+                 <select id="selecaoModo">
+                   <option value="Hospital">Hospital</option>
+                   <option value="Especialidade">Especialidade</option>
+                   <option value="OrdemDecrescente">Ordem de vaga Decrescente</option>
+                   <option value="OrdemCrescente">Ordem de vaga Crescente</option>
+                 </select>
+                 <label for="selecaoModo">Classificar por: </label>
+
+             </div>
+            </div>
+          </div>
+           <!--card stats start-->
             <div id="card-stats">
-              <div class="row mt-1">
-                <div class="card gradient-45deg-grey-white">
-                <div>
-                	<h4 class="grey-text" > Hospital Restauração</h4>
-                </div>
-                 <div class="col s12 m6 l3">
-                  <?php 
-				  if($vaga_restauracao[0]['queimados'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_restauracao[0]['queimados'] < 7 )
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_restauracao[0]['queimados'] < 10 )
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?>
-				  <div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">flare</i>
-                        <h5>Queimados</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_restauracao[0]['queimados']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                  <?php 
-				  if($vaga_restauracao[0]['cardiacos'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_restauracao[0]['cardiacos'] < 7 )
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_restauracao[0]['cardiacos'] < 10 )
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">favorite</i>
-                        <h5>Cardiacos</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_restauracao[0]['cardiacos']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                 <?php 
-				  if($vaga_restauracao[0]['obstetricas'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_restauracao[0]['obstetricas'] < 7 )
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_restauracao[0]['obstetricas'] < 10 )
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">pregnant_woman</i>
-                        <h5>Obstetrica</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_restauracao[0]['obstetricas']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                <?php 
-				  if($vaga_restauracao[0]['ortopedica'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_restauracao[0]['ortopedica'] < 7 )
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_restauracao[0]['ortopedica'] < 10 )
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">directions_walk</i>
-                        <h5>Ortopedia</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_restauracao[0]['ortopedica']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-             </div>
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row mt-1 linhas"></div> 
+              <div class="row linhas"></div> 
+       
             </div>
-             <div id="card-stats2">
-              <div class="row mt-1">
-                <div class="card gradient-45deg-grey-white">
-                <div>
-                	<h4 class="grey-text" > Hospital Getulio Vargas</h4>
-                </div>
-                 <div class="col s12 m6 l3">
-                 <?php 
-				  if($vaga_getulio[0]['queimados'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_getulio[0]['queimados'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_getulio[0]['queimados'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?> <div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">flare</i>
-                        <h5>Queimados</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_getulio[0]['queimados']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                 <?php 
-				  if($vaga_getulio[0]['cardiacos'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_getulio[0]['cardiacos'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_getulio[0]['cardiacos'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">favorite</i>
-                        <h5>Cardiacos</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_getulio[0]['cardiacos']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                 <?php 
-				  if($vaga_getulio[0]['obstetricas'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_getulio[0]['obstetricas'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_getulio[0]['obstetricas'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">pregnant_woman</i>
-                        <h5>Obstetrica</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_getulio[0]['obstetricas']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                  <?php 
-				  if($vaga_getulio[0]['ortopedica'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_getulio[0]['ortopedica'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_getulio[0]['ortopedica'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">directions_walk</i>
-                        <h5>Ortopedia</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_getulio[0]['ortopedica']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-             </div>
-            </div>        
-            <!-- começa novo hospital-->
-            <div id="card-stats3">
-              <div class="row mt-1">
-                <div class="card gradient-45deg-grey-white">
-                <div>
-                	<h4 class="grey-text" > Hospital Miguel Arraes</h4>
-                </div>
-                 <div class="col s12 m6 l3">
-                  <?php 
-				  if($vaga_miguel[0]['queimados'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_miguel[0]['queimados'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_miguel[0]['queimados'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?> <div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">flare</i>
-                        <h5>Queimados</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_miguel[0]['queimados']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                   <?php 
-				  if($vaga_miguel[0]['cardiacos'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_miguel[0]['cardiacos'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_miguel[0]['cardiacos'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">favorite</i>
-                        <h5>Cardiacos</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_miguel[0]['cardiacos']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                   <?php 
-				  if($vaga_miguel[0]['obstetricas'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_miguel[0]['obstetricas'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_miguel[0]['obstetricas'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">pregnant_woman</i>
-                        <h5>Obstetrica</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_miguel[0]['obstetricas']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                  <?php 
-				  if($vaga_miguel[0]['ortopedica'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_miguel[0]['ortopedica'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_miguel[0]['ortopedica'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">directions_walk</i>
-                        <h5>Ortopedia</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_miguel[0]['ortopedica']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-             </div>
-            </div>           
-            <div id="card-stats4">
-              <div class="row mt-1">
-                <div class="card gradient-45deg-grey-white">
-                <div>
-                	<h4 class="grey-text" > Hospital Oswaldo Cruz</h4>
-                </div>
-                 <div class="col s12 m6 l3">
-                 <?php 
-				  if($vaga_oswaldo[0]['queimados'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_oswaldo[0]['queimados'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_oswaldo[0]['queimados'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?> <div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">flare</i>
-                        <h5>Queimados</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_oswaldo[0]['queimados']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                  <?php 
-				  if($vaga_oswaldo[0]['cardiacos'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_oswaldo[0]['cardiacos'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_oswaldo[0]['cardiacos'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?> <div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">favorite</i>
-                        <h5>Cardiacos</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_oswaldo[0]['cardiacos']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                <?php 
-				  if($vaga_oswaldo[0]['obstetricas'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_oswaldo[0]['obstetricas'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_oswaldo[0]['obstetricas'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?> <div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">pregnant_woman</i>
-                        <h5>Obstetrica</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_oswaldo[0]['obstetricas']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col s12 m6 l3">
-                 <?php 
-				  if($vaga_oswaldo[0]['ortopedica'] < 4)
-				    echo" <div class=\"card gradient-45deg-red-pink gradient-shadow min-height-100 white-text\">" ;
-				  else if($vaga_oswaldo[0]['ortopedica'] < 7)
-				    echo" <div class=\"card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text\">" ;
-                  else if($vaga_oswaldo[0]['ortopedica'] < 10)
-					echo" <div class=\"card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text\">" ; 
-                  else
-				    echo" <div class=\"card gradient-45deg-green-teal gradient-shadow min-height-100 white-text\">" ;
-				  
-				 ?><div class="padding-4">
-                      <div class="col s7 m7">
-                        <i class="material-icons background-round mt-5">directions_walk</i>
-                        <h5>Ortopedia</h5>
-                      </div>
-                      <div class="col s5 m5 right-align">
-
-                        <h4 class="mb-0"><?php echo"{$vaga_oswaldo[0]['ortopedica']}"?></h4>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-             </div>
-            </div>
-           </section>
+          </div>
+            
+        </section>
           <!--card widgets start-->
 
        
@@ -1087,20 +703,24 @@
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <!--scrollbar-->
     <script type="text/javascript" src="vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
-    <script type="text/javascript" src="js/plugins.js"></script>
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="js/custom-script.js"></script>
+        <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="js/plugins.js"></script>
+    <!-- Script para carregar os cards-->
+    <script type="text/javascript" src="js/script_index2.js" ></script>
     <!--Script para o toast -->
-    <script type="text/javascript">
+    <script type="text/javascript" >
       window.onload = function(){
-      Materialize.toast("Bem Vindo <?php echo isset($_SESSION['nome']) ? $_SESSION['nome']  : $_COOKIE['nome']?>", 2500);
+        Materialize.toast("Bem Vindo <?php echo isset($_SESSION['nome']) ? $_SESSION['nome']  : $_COOKIE['nome']?>", 2500);
       }
+
     </script>
+
     <script>
-      $(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
+    $(document).ready(function(){
+        $('.collapsible').collapsible();
+    });
     </script>
   </body>
 </html>

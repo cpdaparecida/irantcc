@@ -1,6 +1,0 @@
-<?php
-include 'config_hospitais.php';
-session_start();
-echo "{hospitais['$_SESSION[\'hospital\']']}.php"
-
-?>

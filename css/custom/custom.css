@@ -21,6 +21,12 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
   white-space: nowrap;
   opacity: 0.87;
 }
+ .opcoes-painel{
+  color: #eeeeee;
+  font-family: "Roboto", sans-serif ;
+  font-style: 14px;
+  float: top;
+ }
  /* task card */
 .task-card label {
   display: block;
