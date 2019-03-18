@@ -1,0 +1,2 @@
+v1.0 : Versão com varios hospitais, mas não todos. 
+v1.2 : Versão com todos os hospitais, front-end do index definido, e back-end dos filtros okay, mas falta estabelecer ordem por hospital ou por vagas.
