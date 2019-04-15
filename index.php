@@ -371,11 +371,11 @@
               </div>
 
              <div class="input-field col s3">
-                 <select id="selecaoModo">
+                 <select id="selecaoModo" onchange="selecionaClassificacao(this)">
                    <option value="Hospital">Hospital</option>
                    <option value="Especialidade">Especialidade</option>
-                   <option value="OrdemDecrescente">Ordem de vaga Decrescente</option>
-                   <option value="OrdemCrescente">Ordem de vaga Crescente</option>
+                   <option value="ordemDecrescente">Ordem de vaga Decrescente</option>
+                   <option value="ordemCrescente">Ordem de vaga Crescente</option>
                  </select>
                  <label for="selecaoModo">Classificar por: </label>
 

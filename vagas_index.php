@@ -6,6 +6,9 @@ $cardNome = array();
 $cardConteudo  = array();
 $conteudoCard = " ";
 $_GET['especialidade'] = isset($_GET['especialidade']) ? strtolower($_GET['especialidade']) : '*';
+
+  
+
 if($_GET['especialidade'] != '*'){
 $estadoDB = DBRead("info_hospitais", null , "hospital, {$_GET['especialidade']}");
 }
@@ -687,7 +690,7 @@ else{
                             <span class=\"right\" >Hospital {$estadoDB[$key]['hospital']}</span>
                               <div class=\"col s7 m7\">";
             } 
-                $conteudoCard .= "<i class=\"material-icons background-round mt-5\">wc</i>
+                $conteudoCard .= "<i class=\"material-icons background-round mt-5\">spa</i>
                         <p>Ginecologia</p>
                             </div>
                             <div class=\"col s5 m5 right-align\">
