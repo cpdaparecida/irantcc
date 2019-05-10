@@ -35,4 +35,5 @@
 		DBClose($link);
 		return $dados;		
 	}
-	
+
+

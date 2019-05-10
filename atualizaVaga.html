@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="description" content="Supervisório de leitos hospitalares, criado para agilizar a transferencia de pacientes que seguem aguardando atendemento especializado">
+    <meta name="keywords" content="supervisório, leitos, supervisório hospitalar, tecnologia hospitalar, superviório na saúde, materialize,">
+    <title>Pagina Atualiza | IranTCC </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+	<!-- Favicons-->
+    <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
+    <!-- Favicons-->
+    <link rel="apple-touch-icon-precomposed" href="images/favicon/apple-touch-icon-152x152.png">
+    <!-- For iPhone -->
+    <meta name="msapplication-TileColor" content="#00bcd4">
+    <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
+    <!-- For Windows Phone -->
+    <!-- CORE CSS-->
+    <link href="css//materialize_login.css" type="text/css" rel="stylesheet">
+    <link href="css//style_login.css" type="text/css" rel="stylesheet">
+    <!-- Custome CSS-->
+    <link href="css/custom/custom.css" type="text/css" rel="stylesheet">
+    <link href="css/layouts/page-center.css" type="text/css" rel="stylesheet">
+
+    <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
+    <link href="vendors/perfect-scrollbar/perfect-scrollbar_login.css" type="text/css" rel="stylesheet">
+  </head>
+  <body class="cyan" onload="buscaHospitais()">
+    <!-- Start Page Loading -->
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+    <!-- End Page Loading -->
+    <div id="login-page" class="row">
+      <div class="col s12 z-depth-4 card-panel">
+        <form class="login-form" method="POST" action="">
+          <div class="row">
+            <div class="input-field col s12 center">
+              <img src="images/logo/login-logo.png" alt="" class="circle responsive-img valign profile-image-login">
+              <p class="center login-form-text">Atualização de Vaga</p>
+            </div>
+          </div>
+          <div class="row margin" id="rowUs">
+            <div class="input-field col s12">
+              <i class="material-icons prefix pt-5">local_hospital</i>
+                <select id="hospitais">
+                    
+                </select>
+              <label for="hospital" class="center-align">Selecione Um Hospital</label>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="input-field col s12">
+              <button  class="btn waves-effect waves-light col s12" type="submit" name="entrar" id="entrar">Acessar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- ================================================
+    Scripts
+    ================================================ -->
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="vendors/jquery-3.2.1.min.js"></script>
+    <!--materialize js-->
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <!--scrollbar-->
+    <script type="text/javascript" src="vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="js/plugins.js"></script>
+    <!--custom-script.js - Add your own theme custom JS-->
+    <script type="text/javascript" src="js/custom-script.js"></script>
+    <script type="text/javascript">
+      var xhr ;
+      var optionsHospitais = [];
+      var optionHospitais;
+      var attHospitais;
+      var hospitais = {};
+      if(window.XMLHttpRequest)
+        xhr = new XMLHttpRequest();
+         else
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+      document.querySelector('form').addEventListener("submit", function (evento) {
+        
+      });
+      
+      xhr.onreadystatechange = function(){
+
+        if(xhr.readyState === 4 && xhr.status === 200){
+            hospitais = JSON.parse(xhr.response);
+            carregaHospitais(hospitais)
+        }
+      }
+      
+      function carregaHospitais(data){
+        console.log("data", data)
+        for(hosp in data){
+            
+            attHospitais = document.createAttribute("value");
+            attHospitais.value = data[hosp].hospitais_id;
+
+            optionHospitais = document.createElement("option");
+            optionHospitais.innerHTML = data[hosp].hospital;
+            console.log("Option Hospital:" , optionHospitais)
+            
+            optionsHospitais.push(optionHospitais);
+         //console.log("Data: ", optionsHospitais);    
+        }
+        var hsp = document.getElementById("hospitais");
+        hsp..appendChild(optionsHospitais)
+      }
+      
+      function buscaHospitais(){
+          xhr.open("GET", "updateVaga.php", true );
+          xhr.send();
+      }
+    </script>
+  </body>
+</html>
