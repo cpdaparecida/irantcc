@@ -31,7 +31,7 @@ foreach ($ultimasVagas as $key => $value) {
          
       //  $ConteudoCard .= "<span class=\"text text-lighten-5 center\">Hospital {$ultimasVagas[$key]['hospital']}</span>";
 		
-        if(strcmp($ultimasVagas[$key]['especialidade'], "Queimaduras")  == 0 )
+        if(strcmp($ultimasVagas[$key]['especialidade'], "Queimados")  == 0 )
         	$ConteudoCard .= "<p class=\"card-stats-title center\" style=\"font-size: 1.5rem;\">
               <i class=\"material-icons\">flare</i> Queimaduras </p>";
         
@@ -39,11 +39,11 @@ foreach ($ultimasVagas as $key => $value) {
         	$ConteudoCard .= "<p class=\"card-stats-title center\" style=\"font-size: 1.5rem;\">
               <i class=\"material-icons\">favorite</i> Vascular </p>";
         
-        if(strcmp($ultimasVagas[$key]['especialidade'], "Obstetricia") == 0 )
+        if(strcmp($ultimasVagas[$key]['especialidade'], "Obstetrica") == 0 )
         	$ConteudoCard .= "<p class=\"card-stats-title center\" style=\"font-size: 1.5rem;\">
               <i class=\"material-icons\">pregnant_woman</i> Obstetrícia </p>";
         
-        if(strcmp($ultimasVagas[$key]['especialidade'], "Traumato") == 0 )
+        if(strcmp($ultimasVagas[$key]['especialidade'], "Ortopedica") == 0 )
         	$ConteudoCard .= "<p class=\"card-stats-title center\" style=\"font-size: 1.5rem;\">
               <i class=\"material-icons\">directions_walk</i> Traumato </p>";
 

@@ -2,7 +2,7 @@
     var count = 0;
     var linha = 0;
     var filtros = document.getElementById("selecaoFiltro"); // Seleciona a Seleção
-    var ordem = "Hospital";
+    var ordem;
     var elemento  = document.getElementsByTagName("div")[19]; // Pega o elemento onde o chip vai ser adicionado 
     var filtros = [];
     var string = "";
@@ -12,43 +12,24 @@
       else
         xhr_idx = new ActiveXObject("Microsoft.XMLHTTP");
 
-        xhr_idx.open('GET' , "vagas_index.php", true);
-        xhr_idx.send();
-
     function selecionaClassificacao(el){
         ordem = el.value;
-        
-        busca()
+        console.log(el.value.indexOf("ordemDecrescente")  == 0);
+        if(el.value.indexOf("ordemDecrescente")  == 0){
+            xhr_idx.open('GET' , "vagas_index_ordem.php?ordem=decrescente", true);
+            xhr_idx.send();
+        }
+        else if(el.value.indexOf("Hospital")  == 0){
+            xhr_idx.open('GET' , "vagas_index.php", true);
+            xhr_idx.send();
+        }
+        else if(el.value.indexOf("ordemCrescente")  == 0){
+            xhr_idx.open('GET' , "vagas_index_ordem.php?ordem=crescente", true);
+            xhr_idx.send();
+        }
     }
     console.log("Ordem: ",ordem);
-    function busca(){
-      if(filtros.length == 0){
 
-        if(ordem.indexOf("ordemDecrescente")  == 0){
-          xhr_idx.open('GET' , "vagas_index_ordem.php?ordem=decrescente", true);
-          xhr_idx.send();
-        }
-        else if(ordem.indexOf("Hospital")  == 0){
-          xhr_idx.open('GET' , "vagas_index.php", true);
-          xhr_idx.send();
-      }
-      else if(ordem.indexOf("ordemCrescente")  == 0){
-        xhr_idx.open('GET' , "vagas_index_ordem.php?ordem=crescente", true);
-        xhr_idx.send();
-      }
-      } else{
-        if(ordem.indexOf("ordemDecrescente") == 0 )
-              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=decrescente&especialidade=" + filtros, true);
-            if(ordem.indexOf("Hospital") == 0 )
-              xhr_idx.open('GET', "vagas_index.php?especialidade=" + filtros, true);
-            if(ordem.indexOf("ordemCrescente") == 0 )
-              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=crescente&especialidade=" + filtros, true);
-          
-      }
-    
-      xhr_idx.send();
-    }
-    
     function selecionaFiltro(el){
       //cria o chip
       var chip = document.createElement("div");
@@ -61,7 +42,6 @@
       close.classList.add("close");
       close.classList.add("material-icons");
       close.innerHTML = "close";
-      
       close.onclick = function(el){
         var string = el.path[1].innerHTML; 
         var elemento = string.split(" "); 
@@ -71,24 +51,47 @@
         filtros.splice(filtros.indexOf(elemento), 1);
         console.log("Filtros apos deletado" ,filtros);
         
-        busca();
+          if(filtros[0]){
+            if(ordem.indexOf("ordemDecrescente") == 0 )
+              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=descrescente&especialidade=" + filtros, true);
+            if(ordem.indexOf("Hospital") == 0 )
+              xhr_idx.open('GET', "vagas_index.php?especialidade=" + filtros, true);
+            if(ordem.indexOf("ordemCrescente") == 0 )
+              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=crescente&especialidade=" + filtros, true);
+          }
+          else{
+            if(ordem.indexOf("ordemDecrescente") == 0 )
+              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=descrescente", true);
+            if(ordem.indexOf("Hospital") == 0 )
+              xhr_idx.open('GET', "vagas_index.php", true);
+            if(ordem.indexOf("ordemCrescente") == 0 )
+              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=crescente", true);
+          }
+            
+
+          xhr_idx.send();
       };  
-      
-        //adiciona ação de fechar ao chip
+      //adiciona ação de fechar ao chip
       chip.appendChild(close);
       //adiciona o chip completo no espaço correto
       elemento.appendChild(chip);
       console.log("filtros :",filtros);
       console.log("ordem: ", ordem);
-      //xhr_idx.send(); 
+            if(ordem.indexOf("ordemDecrescente") == 0 )
+              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=descrescente&especialidade=" + filtros, true);
+            if(ordem.indexOf("Hospital") == 0 )
+              xhr_idx.open('GET', "vagas_index.php?especialidade=" + filtros, true);
+            if(ordem.indexOf("ordemCrescente") == 0 )
+              xhr_idx.open('GET', "vagas_index_ordem.php?ordem=crescente&especialidade=" + filtros, true);
+          
+      xhr_idx.send(); 
       string = "";
-        
-      busca()
-    }
+      }
       
   
 
-      
+      xhr_idx.open('GET' , "vagas_index.php", true);
+      xhr_idx.send();
 
     
      var linhas = document.getElementsByClassName('linhas');
@@ -103,7 +106,7 @@
 
              var json = JSON.parse(xhr_idx.response);
              linhas[linha].innerHTML = json[0];
-          //    console.log(json);
+              console.log(json);
               if(Object.values(json).length > 1){
               for (var i = 1; i < Object.values(json).length ; i++) {
                  if(i % 4 == 0 ){

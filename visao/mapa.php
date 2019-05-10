@@ -2,29 +2,15 @@
     include 'config.php';
     include 'connection.php';
 
-  $vaga = DBRead("info_hospitais", null, "hospital, lat, log, queimaduras, 
-  cardiacos, obstetricia, traumato, clinica, vascular, 
-  otorrinolaringologia, pediatria, infectologia, intoxicacao, 
-  neurologia, odontologia, urologia, psiquiatria, ginecologia");
+  $vaga = DBRead('info_hospitais', null, 'hospital, lat, log, queimados, cardiacos, obstetricas, ortopedica');
   
   $especialidades = array(
-      0 => 'queimaduras',
+      0 => 'queimados',
       1 => 'cardiacos',
-      2 => 'obstetricia',
-      3 => 'traumato',
-      4 => 'clinica',
-      5 => 'vascular',
-      6 => 'otorrinolaringologia',
-      7 => 'pediatria',
-      8 => 'infectologia',
-      9 => 'intoxicacao',
-      10 => 'neurologia',
-      11 => 'odontologia',
-      12 => 'urologia',
-      13 => 'psiquiatria',
-      14 => 'ginecologia'
+      2 => 'obstetricas',
+      3 => 'ortopedica'
   );
-  
+
 
   function media($vaga, $especialidade){
   for($i = 0 ; $i < count($especialidade) ;$i++){
@@ -105,7 +91,7 @@ return $media;
 
           $hospital .= $nome[0];
           $hospital .= ":{\n\t\t\tcentro:";
-          $hospital .= "{ lat : {".$vaga[$i]['lat']."}, lng :{".$vaga[$i]['log']."} },\n\t\t\t";
+          $hospital .= "{ lat : {$vaga[$i]['lat']}, lng :{$vaga[$i]['log']} },\n\t\t\t";
           $hospital .= "vaga: ";
           $hospital .= media($vaga[$i],$especialidades);
           $hospital .= ",\n\t\t\t";
@@ -124,7 +110,7 @@ return $media;
             if($i != count($vaga) -1)
              $hospital .=",\n";
         }
-       // echo $hospital;
+        echo $hospital;
 ?>
  }
 
@@ -170,7 +156,7 @@ return $media;
           });
         }); 
 	   
-/*
+
      for (var hosp in hospitais){
 
 
@@ -190,7 +176,7 @@ return $media;
      } 
 	 
 	 
-*/
+
 
 
    }
@@ -203,7 +189,7 @@ return $media;
     </script>
 		</div>
 		    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4bZaps4mAoAX3-JtyBdEkIhOFH6gGKPw&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKKh5M6n8iEdp9tiG6II94BpXdO-JtklQ&callback=initMap">
     </script>
 			</body>
 </html>
