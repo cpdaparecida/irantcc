@@ -89,12 +89,16 @@ else{
     }
 
 
-if(strcmp($_GET['ordem'], "decrescente") == 0)
+if(strcmp($_GET['ordem'], "decrescente") == 0){
 	rsort($vagaMaior);
+	//var_dump($vagaMaior);
+}
 else if(strcmp($_GET['ordem'], "crescente") == 0)
 	sort($vagaMaior);
 
- for ($i=0; $i < count($vagaMaior); $i++) { 
+
+
+for ($i=0; $i < count($vagaMaior); $i++) { 
 	foreach($list as $key => $value){
 	  if(isset($list[$key]['queimaduras'])){
 	  	 if(intval($vagaMaior[$i]) == intval($list[$key]['queimaduras'])){

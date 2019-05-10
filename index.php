@@ -369,13 +369,8 @@ function DBExecute($query){
                <span class="">Filtros: </span>
                
              </div>
-             <div class="col s1">
-               <label class="">Mostrar:
-               <a href="" class="btn-flat pl-0 pr-0 tooltipped" data-position="bottom" data-tooltip="Modulos"><i class="material-icons mb-0 md-24">view_comfy</i></a>
-               <a href="" class="btn-flat pl-0 pr-0 tooltipped" data-position="bottom" data-tooltip="Lista"  ><i class="material-icons mb-0 md-24 grey-text" >view_list</i></a>
-               </label>
-               </div>
-               <div class="input-field col s3">
+             
+               <div class="input-field col s4">
                <select id="selecaoFiltro" onchange="selecionaFiltro(this)">
                  <option value="" disabled="true" selected="true">Filtros</option>
                  <option value="Vascular" >Vascular</option>
